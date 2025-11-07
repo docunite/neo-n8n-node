@@ -1,0 +1,14 @@
+node_modules/
+credentials/
+nodes/
+*.ts
+!dist/**/*.d.ts
+tsconfig.json
+.eslintrc.js
+.prettierrc
+.gitignore
+.git/
+.idea/
+.vscode/
+*.log
+
