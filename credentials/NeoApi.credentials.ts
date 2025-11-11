@@ -7,7 +7,7 @@ import {
 
 export class NeoApi implements ICredentialType {
 	name = 'neoApi';
-	displayName = 'Neo API';
+	displayName = 'docunite® NEO API';
 	documentationUrl = 'https://api.docunite.ai/';
 	properties: INodeProperties[] = [
 		{
@@ -17,7 +17,7 @@ export class NeoApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			required: true,
-			description: 'Your Neo API Key from docunite.ai',
+			description: 'Your docunite® NEO API Key',
 		},
 		{
 			displayName: 'Base URL',
@@ -25,7 +25,7 @@ export class NeoApi implements ICredentialType {
 			type: 'string',
 			default: 'https://api.docunite.ai',
 			required: true,
-			description: 'The base URL for the Neo API',
+			description: 'The base URL for the docunite® NEO API',
 		},
 	];
 

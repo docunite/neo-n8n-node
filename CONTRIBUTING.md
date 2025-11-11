@@ -1,97 +1,96 @@
-# Beitrag zu n8n-nodes-neo
+# Contributing to n8n-nodes-neo
 
-Vielen Dank für Ihr Interesse, zu n8n-nodes-neo beizutragen! 🎉
+Thank you for your interest in contributing to n8n-nodes-neo! 🎉
 
-## Entwicklungsumgebung einrichten
+## Setting up the Development Environment
 
-1. **Repository forken und klonen**
+1. **Fork and clone the repository**
 ```bash
-git clone https://github.com/IHR-USERNAME/n8n-nodes-neo.git
+git clone https://github.com/YOUR-USERNAME/n8n-nodes-neo.git
 cd n8n-nodes-neo
 ```
 
-2. **Dependencies installieren**
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Node bauen**
+3. **Build the node**
 ```bash
 npm run build
 ```
 
-4. **In lokaler n8n-Instanz testen**
+4. **Test in a local n8n instance**
 ```bash
-# Node verlinken
+# Link the node
 npm link
 
-# In Ihrem n8n-Verzeichnis
+# In your n8n directory
 cd ~/.n8n
 npm link n8n-nodes-neo
 
-# n8n starten
+# Start n8n
 n8n start
 ```
 
-## Code-Stil
+## Code Style
 
-Wir verwenden ESLint und Prettier für konsistenten Code-Stil:
+We use ESLint and Prettier for consistent code style:
 
 ```bash
 # Linting
 npm run lint
 
-# Automatische Fixes
+# Automatic fixes
 npm run lintfix
 
-# Formatierung
+# Formatting
 npm run format
 ```
 
 ## Pull Requests
 
-1. Erstellen Sie einen Branch für Ihre Änderung:
+1. Create a branch for your changes:
    ```bash
-   git checkout -b feature/meine-neue-funktion
+   git checkout -b feature/my-new-feature
    ```
 
-2. Committen Sie Ihre Änderungen:
+2. Commit your changes:
    ```bash
-   git commit -m "feat: Beschreibung der Änderung"
+   git commit -m "feat: description of change"
    ```
 
-3. Pushen Sie zu Ihrem Fork:
+3. Push to your fork:
    ```bash
-   git push origin feature/meine-neue-funktion
+   git push origin feature/my-new-feature
    ```
 
-4. Erstellen Sie einen Pull Request auf GitHub
+4. Create a Pull Request on GitHub
 
-## Commit-Nachrichten
+## Commit Messages
 
-Wir folgen der [Conventional Commits](https://www.conventionalcommits.org/) Spezifikation:
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
-- `feat:` - Neue Features
-- `fix:` - Bug-Fixes
-- `docs:` - Dokumentationsänderungen
-- `style:` - Code-Stil Änderungen
-- `refactor:` - Code-Refactoring
-- `test:` - Tests hinzufügen/ändern
-- `chore:` - Wartungsaufgaben
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Adding/changing tests
+- `chore:` - Maintenance tasks
 
-## Testen
+## Testing
 
-Bevor Sie einen Pull Request erstellen:
+Before creating a Pull Request:
 
-1. Testen Sie alle geänderten Operationen in n8n
-2. Stellen Sie sicher, dass der Build erfolgreich ist
-3. Führen Sie Linting durch
+1. Test all modified operations in n8n
+2. Ensure the build succeeds
+3. Run linting
 
-## Fragen?
+## Questions?
 
-Bei Fragen können Sie:
-- Ein Issue auf GitHub öffnen
-- Eine E-Mail an support@docunite.ai senden
+If you have questions, you can:
+- Open an issue on GitHub
+- Send an email to support@docunite.com
 
-Vielen Dank für Ihren Beitrag! 🙏
-
+Thank you for your contribution! 🙏

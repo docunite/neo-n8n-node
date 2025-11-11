@@ -1,126 +1,114 @@
 # n8n-nodes-neo
 
-![Neo Banner](https://api.docunite.ai/static/banner.png)
+This is an n8n Community Node for integrating the **docunite® NEO API** by [docunite.com](https://docunite.com/neo).
 
-Dies ist ein n8n Community Node für die Integration der **Neo API** von [docunite.ai](https://docunite.ai).
+**docunite® NEO** is an intelligent document management platform with AI-powered classification, extraction, and processing. This node allows you to use all docunite® NEO API features directly in your n8n workflows.
 
-**Neo** ist eine intelligente Dokumentenmanagement-Plattform mit KI-gestützter Klassifizierung, Extraktion und Verarbeitung. Dieser Node ermöglicht es Ihnen, alle Funktionen der Neo API direkt in Ihren n8n-Workflows zu nutzen.
-
-[n8n](https://n8n.io/) ist ein [fair-code lizenziertes](https://docs.n8n.io/reference/license/) Workflow-Automatisierungstool.
+[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation tool.
 
 ## 🚀 Installation
 
-### Community Nodes (Empfohlen)
+### For n8n Cloud Users
 
-Für Benutzer auf n8n v0.187+, können Sie die Community Nodes Funktion verwenden, um diesen Node zu installieren:
+**Note**: This community node will be available in n8n Cloud after it has been verified by n8n. We have submitted it for verification and will update this section once approved.
 
-1. Gehen Sie zu **Settings > Community Nodes**
-2. Wählen Sie **Install**
-3. Geben Sie `n8n-nodes-neo` in das Feld "Enter npm package name" ein
-4. Stimmen Sie den [Risiken](https://docs.n8n.io/integrations/community-nodes/risks/) der Verwendung von Community Nodes zu
-5. Installieren Sie den Node
+Once verified, you will be able to install it directly from the n8n node panel.
 
-Nach der Installation ist der Neo Node in Ihrer n8n-Instanz verfügbar und Sie können ihn in Ihren Workflows verwenden.
+### For Self-hosted n8n Instances
 
-### Manuelle Installation (Selbst-gehostete Instanzen)
+You can install this node manually on your self-hosted n8n instance (requires n8n v0.187+):
 
-Für selbst-gehostete n8n-Instanzen können Sie den Node manuell installieren:
+#### Option 1: Using Community Nodes Feature
+
+1. Go to **Settings > Community Nodes**
+2. Select **Install**
+3. Enter `n8n-nodes-neo` in the "Enter npm package name" field
+4. Agree to the [risks](https://docs.n8n.io/integrations/community-nodes/risks/) of using Community Nodes
+5. Install the node
+
+After installation, the docunite® NEO node will be available in your n8n instance.
+
+#### Option 2: Manual Installation
+
+For self-hosted n8n instances, you can also install the node manually:
 
 ```bash
 cd ~/.n8n/nodes
 npm install n8n-nodes-neo
 ```
 
-Starten Sie n8n neu, damit die Änderungen wirksam werden.
+Restart n8n for the changes to take effect.
 
 ## 🔑 Credentials
 
-Um den Neo Node zu verwenden, benötigen Sie:
+To use the docunite® NEO node, you need:
 
-1. **API Key**: Ihr Neo API-Schlüssel von docunite.ai
-2. **Tenant ID**: Ihre Tenant-ID
-3. **Base URL** (optional): Standard ist `https://api.docunite.ai`
+1. **API Key**: Your docunite® NEO API Key
+2. **Base URL**: Defaults to `https://api.docunite.ai`
 
-### Credentials einrichten
+### Setting up Credentials
 
-1. Gehen Sie zu **Credentials > New**
-2. Suchen Sie nach "Neo API"
-3. Geben Sie Ihren API Key und Tenant ID ein
-4. Speichern Sie die Credentials
+1. Go to **Credentials > New**
+2. Search for "docunite® NEO API"
+3. Enter your API Key
+4. Save the credentials
 
-## 📚 Operationen
+## 📚 Operations
 
-Der Neo Node unterstützt folgende Ressourcen und Operationen:
+The docunite® NEO node supports the following resources and operations:
 
 ### 📊 Account Management
 
-- **Get Balance**: Abrufen des Credit-Guthabens
-- **Get Usage**: Abrufen der Nutzungsstatistiken (täglich, monatlich, jährlich)
-- **Get Usage With Process Steps**: Detaillierte Nutzungsinformationen mit Prozessschritt-Aufschlüsselung
+- **Get Balance**: Retrieve credit balance
+- **Get Usage**: Retrieve usage statistics (daily, monthly, yearly)
+- **Get Usage With Process Steps**: Detailed usage information with process step breakdown
 
 ### 📄 Document Management
 
-- **Upload**: Dokumente hochladen und verarbeiten
-  - Unterstützt automatische Klassifizierung
-  - Intelligentes Dokumenten-Splitting
-  - Benutzerdefinierte Prompts
-- **Get**: Dokument nach ID abrufen
-- **Get Batch**: Dokumente nach Correlation ID abrufen
-- **Get Metadata**: Dokument-Metadaten abrufen
-- **Delete**: Einzelnes Dokument löschen
-- **Delete Multiple**: Mehrere Dokumente löschen
-- **Update**: Dokument-Metadaten aktualisieren
-- **Download**: Dokument herunterladen
-- **Chat**: Mit einem Dokument chatten (AI-gestützt)
-- **Chat Multiple**: Mit mehreren Dokumenten chatten
-- **Classify**: Dokumente klassifizieren
-- **Export**: Dokumentdaten exportieren
-- **Export Multiple**: Mehrere Dokumente exportieren
-- **Index**: Dokument für Suche indexieren
-- **Index Multiple**: Mehrere Dokumente indexieren
-- **Retrieve**: Dokumentinhalt mit optionaler Anreicherung abrufen
-- **Retrieve Multiple**: Mehrere Dokumente abrufen
+- **Upload**: Upload and process documents
+  - Supports automatic classification
+  - Intelligent document splitting
+  - Custom prompts
+  - Optional original path storage
+- **Get**: Retrieve document by ID
+- **Get Batch**: Retrieve documents by correlation ID (e.g., extracted attachments)
+- **Get Document PDF Blob**: Get a PDF version of the document
+- **Get Document Original Blob**: Get the original version of the document
+- **Get Document OCR**: Get document OCR content
+- **Get Document Markdown**: Get document markdown content
+- **Delete**: Delete single document
+- **Chat**: Chat with a document using AI
+  - Supports custom prompts
+  - Optional chat history
+- **Classify**: Classify documents
+  - Custom prompt support
+  - Batch processing with file IDs
+- **Enrichment**: Initiate document enrichment
+  - Batch processing with file IDs
+- **Extraction**: Extract OCR from documents
+  - Batch processing with file IDs
+- **Split**: Split documents into multiple parts
+  - Batch processing with file IDs
 
 ### 🏢 Entity Management
 
-- **Get All**: Alle Entities abrufen
-- **Get**: Entity nach ID abrufen
-- **Get Default**: Standard-Entity abrufen
-- **Create**: Neue Entity erstellen
-- **Update**: Entity aktualisieren
-- **Delete**: Entity löschen
-
-### 💡 Prompt Management
-
-- **Get All**: Alle Prompts abrufen
-- **Get**: Prompt nach ID abrufen
-- **Create**: Neuen Prompt erstellen (Classification, Enrichment, Chat)
-- **Update**: Prompt aktualisieren
-- **Delete**: Prompt löschen
-
-### 📋 Schema Management
-
-- **Get All**: Alle Schemas abrufen
-- **Get**: Schema nach ID abrufen
-- **Create**: Neues JSON Schema erstellen
-- **Update**: Schema aktualisieren
-- **Delete**: Schema löschen
-
-### 👤 User Management
-
-- **Get Info**: Benutzerinformationen abrufen (User, Tenants, Permissions)
+- **Get All**: Retrieve all entities
+- **Get**: Retrieve entity by ID
+- **Create**: Create new entity
+- **Update**: Update entity
+- **Delete**: Delete entity
 
 ### 🔔 Webhook Management
 
-- **Get All**: Alle Webhooks abrufen
-- **Get**: Webhook nach ID abrufen
-- **Create**: Neuen Webhook erstellen
-- **Update**: Webhook aktualisieren
-- **Delete**: Webhook löschen
+- **Get All**: Retrieve all webhooks
+- **Get**: Retrieve webhook by ID
+- **Create**: Create new webhook
+- **Update**: Update webhook
+- **Delete**: Delete webhook
 
-## 💻 Verwendungsbeispiele
+## 💻 Usage Examples
 
-### Beispiel 1: Dokument hochladen und klassifizieren
+### Example 1: Upload and Classify a Document
 
 ```json
 {
@@ -134,17 +122,17 @@ Der Neo Node unterstützt folgende Ressourcen und Operationen:
         "classify": true,
         "splitDocuments": false
       },
-      "name": "Neo - Upload Document",
+      "name": "docunite® NEO - Upload Document",
       "type": "n8n-nodes-neo.neo",
       "credentials": {
-        "neoApi": "Neo API Credentials"
+        "neoApi": "docunite® NEO API Credentials"
       }
     }
   ]
 }
 ```
 
-### Beispiel 2: Mit Dokumenten chatten
+### Example 2: Chat with a Document
 
 ```json
 {
@@ -154,19 +142,41 @@ Der Neo Node unterstützt folgende Ressourcen und Operationen:
         "resource": "document",
         "operation": "chat",
         "documentId": "document-id-here",
-        "prompt": "Was sind die wichtigsten Punkte in diesem Dokument?"
+        "prompt": "What are the key points in this document?"
       },
-      "name": "Neo - Chat with Document",
+      "name": "docunite® NEO - Chat with Document",
       "type": "n8n-nodes-neo.neo",
       "credentials": {
-        "neoApi": "Neo API Credentials"
+        "neoApi": "docunite® NEO API Credentials"
       }
     }
   ]
 }
 ```
 
-### Beispiel 3: Entities verwalten
+### Example 3: Classify Multiple Documents
+
+```json
+{
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "document",
+        "operation": "classify",
+        "fileIds": "[\"file-id-1\", \"file-id-2\"]",
+        "promptId": "your-classification-prompt-id"
+      },
+      "name": "docunite® NEO - Classify Documents",
+      "type": "n8n-nodes-neo.neo",
+      "credentials": {
+        "neoApi": "docunite® NEO API Credentials"
+      }
+    }
+  ]
+}
+```
+
+### Example 4: Manage Entities
 
 ```json
 {
@@ -175,13 +185,33 @@ Der Neo Node unterstützt folgende Ressourcen und Operationen:
       "parameters": {
         "resource": "entity",
         "operation": "create",
-        "entityName": "Mein Projekt",
-        "entityFields": "{\"description\": \"Projektbeschreibung\"}"
+        "entityName": "My Project"
       },
-      "name": "Neo - Create Entity",
+      "name": "docunite® NEO - Create Entity",
       "type": "n8n-nodes-neo.neo",
       "credentials": {
-        "neoApi": "Neo API Credentials"
+        "neoApi": "docunite® NEO API Credentials"
+      }
+    }
+  ]
+}
+```
+
+### Example 5: Extract OCR from Documents
+
+```json
+{
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "document",
+        "operation": "extraction",
+        "fileIds": "[\"file-id-1\", \"file-id-2\"]"
+      },
+      "name": "docunite® NEO - Extract OCR",
+      "type": "n8n-nodes-neo.neo",
+      "credentials": {
+        "neoApi": "docunite® NEO API Credentials"
       }
     }
   ]
@@ -190,96 +220,94 @@ Der Neo Node unterstützt folgende Ressourcen und Operationen:
 
 ## 🔗 Webhooks
 
-Neo unterstützt Webhooks für asynchrone Benachrichtigungen über den Verarbeitungsstatus:
+docunite® NEO supports webhooks for asynchronous notifications about processing status:
 
-1. Erstellen Sie einen Webhook mit der `Webhook Create` Operation
-2. Registrieren Sie Ihre Callback-URL
-3. Erhalten Sie Benachrichtigungen, wenn die Dokumentenverarbeitung abgeschlossen ist
+1. Create a webhook using the `Webhook Create` operation
+2. Register your callback URL
+3. Receive notifications when document processing is complete
 
-## 📖 API-Dokumentation
+## 📖 API Documentation
 
-Die vollständige API-Dokumentation finden Sie unter:
+The complete API documentation can be found at:
 - Swagger UI: [https://api.docunite.ai/](https://api.docunite.ai/)
 - Swagger JSON: [https://api.docunite.ai/swagger.json](https://api.docunite.ai/swagger.json)
 
-## 🛠️ Kompatibilität
+## 🛠️ Compatibility
 
-- Getestet mit n8n v0.187.0+
+- Tested with n8n v0.187.0+
 - Node.js 18.17.0+
 - n8n-workflow 1.0.0+
 
-## 📝 Lizenz
+## 📝 License
 
 [MIT](LICENSE.md)
 
-## 🤝 Unterstützung
+## 🤝 Support
 
-Bei Fragen oder Problemen:
+For questions or issues:
 - GitHub Issues: [https://github.com/docunite/n8n-nodes-neo/issues](https://github.com/docunite/n8n-nodes-neo/issues)
-- docunite Support: [support@docunite.ai](mailto:support@docunite.ai)
+- docunite Support: [support@docunite.com](mailto:support@docunite.com)
 
-## 🔗 Ressourcen
+## 🔗 Resources
 
-- [n8n Community Nodes Dokumentation](https://docs.n8n.io/integrations/community-nodes/)
-- [docunite.ai Website](https://docunite.ai)
-- [Neo API Dokumentation](https://api.docunite.ai/)
+- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
+- [docunite.com Website](https://docunite.com)
+- [docunite® NEO API Documentation](https://api.docunite.ai/)
 
 ## 🌟 Features
 
-- ✅ Vollständige Neo API-Integration
-- ✅ Alle Ressourcen unterstützt (außer Search)
-- ✅ API-Key Authentifizierung
-- ✅ Umfassende Fehlerbehandlung
-- ✅ Binary Data Support (Upload/Download)
-- ✅ JSON Schema Validierung
-- ✅ Webhook-Integration
-- ✅ AI-gestützte Dokumentenverarbeitung
+- ✅ Full docunite® NEO API integration for core resources
+- ✅ Account Management (Balance & Usage tracking)
+- ✅ Document Management (Upload, Processing, Chat, OCR, etc.)
+- ✅ Entity Management (Full CRUD operations)
+- ✅ Webhook Management (Full CRUD operations)
+- ✅ API Key authentication
+- ✅ Comprehensive error handling
+- ✅ Binary Data support (Upload/Download)
+- ✅ AI-powered document processing and chat
+- ✅ Batch operations support
 
 ## 📦 Version History
 
 ### 0.1.0 (Initial Release)
-- Vollständige Integration aller Neo API Endpunkte
-- Account Management
-- Document Management (Upload, Download, Chat, etc.)
-- Entity Management
-- Prompt Management
-- Schema Management
-- User Management
-- Webhook Management
+- Full integration of core docunite® NEO API endpoints
+- Account Management (Balance, Usage, Usage with Process Steps)
+- Document Management (Upload, Get, Chat, Classify, Enrichment, Extraction, Split, etc.)
+- Entity Management (CRUD operations)
+- Webhook Management (CRUD operations)
 
-## 👨‍💻 Entwicklung
+## 👨‍💻 Development
 
-Wenn Sie zur Entwicklung beitragen möchten:
+If you want to contribute to development:
 
 ```bash
-# Repository klonen
+# Clone repository
 git clone https://github.com/docunite/n8n-nodes-neo.git
 cd n8n-nodes-neo
 
-# Dependencies installieren
+# Install dependencies
 npm install
 
 # Build
 npm run build
 
-# In lokaler n8n-Instanz verlinken
+# Link to local n8n instance
 npm link
 ```
 
-Starten Sie n8n im Development-Modus:
+Start n8n in development mode:
 
 ```bash
 n8n start
 ```
 
-## ⚠️ Wichtige Hinweise
+## ⚠️ Important Notes
 
-- Search-Endpunkte sind absichtlich nicht implementiert (wie vom Kunden gewünscht)
-- File-Upload verwendet Binary Data aus n8n
-- Chat-Operationen unterstützen Streaming-Responses
-- Alle JSON-Parameter können dynamisch über Expressions gesetzt werden
+- File uploads use Binary Data from n8n workflows
+- Chat operations support streaming responses
+- All JSON parameters can be set dynamically via n8n expressions
+- Document processing operations support batch processing with file IDs
 
 ---
 
-Entwickelt mit ❤️ für die n8n Community von [docunite GmbH](https://docunite.ai)
-
+Developed with ❤️ for the n8n community by [docunite GmbH](https://docunite.com)

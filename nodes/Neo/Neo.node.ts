@@ -17,9 +17,9 @@ export class Neo implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Interact with Neo API (docunite.ai) for document management and AI processing',
+		description: 'Interact with docunite® NEO API (docunite.com) for document management and AI processing',
 		defaults: {
-			name: 'Neo',
+			name: 'docunite® NEO',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -571,20 +571,52 @@ export class Neo implements INodeType {
 				default: '',
 				description: 'Callback URL for the webhook',
 			},
-			{
-				displayName: 'Event Types',
-				name: 'webhookEventTypes',
-				type: 'string',
-				required: true,
-				displayOptions: {
-					show: {
-						resource: ['webhook'],
-						operation: ['create'],
-					},
+		{
+			displayName: 'Event Types',
+			name: 'webhookEventTypes',
+			type: 'multiOptions',
+			required: true,
+			displayOptions: {
+				show: {
+					resource: ['webhook'],
+					operation: ['create'],
 				},
-				default: '',
-				description: 'Comma-separated list of event types',
 			},
+			options: [
+				{
+					name: 'Extraction',
+					value: 'EXTRACTION',
+				},
+				{
+					name: 'Classification',
+					value: 'CLASSIFICATION',
+				},
+				{
+					name: 'Enrichment',
+					value: 'ENRICHMENT',
+				},
+			],
+			default: [],
+			description: 'Select one or more event types for the webhook',
+		},
+		{
+			displayName: 'Secret',
+			name: 'webhookSecret',
+		    placeholder: 'Enter a secret key, which optionallycan be used to authenticate the webhook on the receiving side.',
+			type: 'string',
+			required: true,
+			displayOptions: {
+				show: {
+					resource: ['webhook'],
+					operation: ['create'],
+				},
+			},
+			default: '',
+			description: 'Secret key for webhook authentication',
+			typeOptions: {
+				password: true,
+			},
+		},
 			{
 				displayName: 'Provider Type',
 				name: 'webhookProviderType',
@@ -597,19 +629,24 @@ export class Neo implements INodeType {
 				},
 				options: [
 					{
-						name: 'Docunite',
-						value: 'docunite',
-					},
-					{
-						name: 'Teams',
-						value: 'teams',
-					},
-					{
-						name: 'Default',
+						name: 'Custom Provider',
 						value: 'default',
+						description: 'Send webhook to any desired provider',
 					},
+				{
+					name: 'Microsoft Teams',
+					value: 'teams',
+					description: 'Send webhook to Microsoft Teams',
+				},
+				{
+					name: 'docunite® Real Estate DMS',
+					value: 'docunite',
+					description: 'Send webhook to docunite® Real Estate DMS',
+				},
+
+
 				],
-				default: 'docunite',
+				default: 'default',
 				description: 'Provider type of the webhook',
 			},
 			{
@@ -1145,44 +1182,44 @@ export class Neo implements INodeType {
 								url: `/webhooks/${webhookId}`,
 							},
 						);
-					} else if (operation === 'create') {
-						const name = this.getNodeParameter('webhookName', i) as string;
-						const callbackUrl = this.getNodeParameter('webhookCallbackUrl', i) as string;
-						const eventTypesStr = this.getNodeParameter('webhookEventTypes', i) as string;
-						const providerType = this.getNodeParameter('webhookProviderType', i) as string;
-						const fieldsStr = this.getNodeParameter('webhookFields', i, '{}') as string;
+				} else if (operation === 'create') {
+					const name = this.getNodeParameter('webhookName', i) as string;
+					const callbackUrl = this.getNodeParameter('webhookCallbackUrl', i) as string;
+					const eventTypes = this.getNodeParameter('webhookEventTypes', i) as string[];
+					const secret = this.getNodeParameter('webhookSecret', i) as string;
+					const providerType = this.getNodeParameter('webhookProviderType', i) as string;
+					const fieldsStr = this.getNodeParameter('webhookFields', i, '{}') as string;
 
-						const eventTypes = eventTypesStr.split(',').map((type) => type.trim());
-
-						let fields = {};
-						if (fieldsStr) {
-							try {
-								fields = JSON.parse(fieldsStr);
-							} catch (error) {
-								throw new NodeOperationError(
-									this.getNode(),
-									'Additional fields must be valid JSON',
-									{ itemIndex: i },
-								);
-							}
+					let fields = {};
+					if (fieldsStr) {
+						try {
+							fields = JSON.parse(fieldsStr);
+						} catch (error) {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Additional fields must be valid JSON',
+								{ itemIndex: i },
+							);
 						}
+					}
 
-						responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'neoApi',
-							{
-								method: 'POST',
-								baseURL: baseUrl,
-								url: '/webhooks',
-								body: {
-									name,
-									callback_url: callbackUrl,
-									event_types: eventTypes,
-									provider_type: providerType,
-									...fields,
-								},
+					responseData = await this.helpers.httpRequestWithAuthentication.call(
+						this,
+						'neoApi',
+						{
+							method: 'POST',
+							baseURL: baseUrl,
+							url: '/webhooks',
+							body: {
+								name,
+								callback_url: callbackUrl,
+								event_types: eventTypes,
+								secret: secret,
+								provider_type: providerType,
+								...fields,
 							},
-						);
+						},
+					);
 					} else if (operation === 'update') {
 						const webhookId = this.getNodeParameter('webhookIdParam', i) as string;
 						const fieldsStr = this.getNodeParameter('webhookFields', i, '{}') as string;

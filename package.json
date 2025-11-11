@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-neo",
-  "version": "0.1.0",
-  "description": "n8n node for Neo API (docunite.ai) integration - Document management, classification, and AI-powered document processing",
+  "version": "0.1.1",
+  "description": "n8n node for docunite® NEO API (docunite.com) integration - Document management, classification, and AI-powered document processing",
   "keywords": [
     "n8n-community-node-package",
     "n8n",
@@ -15,20 +15,22 @@
   "homepage": "https://github.com/docunite/n8n-nodes-neo",
   "author": {
     "name": "docunite GmbH",
-    "email": "support@docunite.ai"
+    "email": "support@docunite.com"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/docunite/n8n-nodes-neo.git"
   },
-  "main": "index.js",
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "lint": "eslint \"nodes/**/*.ts\" \"credentials/**/*.ts\" package.json",
+    "lintfix": "eslint \"nodes/**/*.ts\" \"credentials/**/*.ts\" package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   },
   "files": [
     "dist"
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.56.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.1",
