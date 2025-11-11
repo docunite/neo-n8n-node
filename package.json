@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-neo",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "n8n node for docunite® NEO API (docunite.com) integration - Document management, classification, and AI-powered document processing",
   "keywords": [
     "n8n-community-node-package",
@@ -12,14 +12,14 @@
     "ai-documents"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/docunite/n8n-nodes-neo",
+  "homepage": "https://github.com/docunite/neo-n8n-node",
   "author": {
     "name": "docunite GmbH",
     "email": "support@docunite.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/docunite/n8n-nodes-neo.git"
+    "url": "git+https://github.com/docunite/neo-n8n-node.git"
   },
   "scripts": {
     "build": "tsc && gulp build:icons",

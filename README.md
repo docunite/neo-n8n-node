@@ -245,7 +245,7 @@ The complete API documentation can be found at:
 ## 🤝 Support
 
 For questions or issues:
-- GitHub Issues: [https://github.com/docunite/n8n-nodes-neo/issues](https://github.com/docunite/n8n-nodes-neo/issues)
+- GitHub Issues: [https://github.com/docunite/neo-n8n-node/issues](https://github.com/docunite/neo-n8n-node/issues)
 - docunite Support: [support@docunite.com](mailto:support@docunite.com)
 
 ## 🔗 Resources
@@ -282,8 +282,8 @@ If you want to contribute to development:
 
 ```bash
 # Clone repository
-git clone https://github.com/docunite/n8n-nodes-neo.git
-cd n8n-nodes-neo
+git clone https://github.com/docunite/neo-n8n-node.git
+cd neo-n8n-node
 
 # Install dependencies
 npm install

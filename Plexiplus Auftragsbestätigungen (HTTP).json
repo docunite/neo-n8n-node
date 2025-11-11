@@ -1,0 +1,260 @@
+{
+  "name": "Plexiplus Auftragsbestätigungen (HTTP)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e2b39a4d-7c9d-42b2-a97a-ead2052c7a1f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e2928c2c-6503-402c-8ee5-71d3dda61c42",
+      "name": "Webhook",
+      "webhookId": "e2b39a4d-7c9d-42b2-a97a-ead2052c7a1f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1bb5e005-9eff-4940-8e04-fe28666181e1",
+              "leftValue": "={{ $json.body.neo_document.document_classification.documentType.de }}",
+              "rightValue": "Auftragsbestätigung",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "61263e00-fb64-49ae-a6c8-aa724d0630e0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "10000",
+          "mode": "list",
+          "cachedResultName": "Plexiplus"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10003",
+          "mode": "list",
+          "cachedResultName": "Fertigungsauftrag"
+        },
+        "summary": "={{ $('Webhook').item.json.body.neo_document.document_enrichment_data.order_confirmation_number }} - {{ $('Webhook').item.json.body.neo_document.document_enrichment_data.customer }} - {{ $('Webhook').item.json.body.neo_document.document_enrichment_data.order_positions_summary }} ",
+        "additionalFields": {
+          "assignee": {
+            "__rl": true,
+            "value": "712020:bc7d3170-0f9e-4843-948d-e452ca9ed3da",
+            "mode": "list",
+            "cachedResultName": "David Schumann"
+          },
+          "description": "={{ $json.body.neo_document.document_enrichment_data.order_positions }}",
+          "customFieldsUi": {
+            "customFieldsValues": [
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_10040",
+                  "mode": "list",
+                  "cachedResultName": "[LEX] Kunde / Firma"
+                },
+                "fieldValue": "={{ $('Webhook').item.json.body.neo_document.document_enrichment_data.customer }}"
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_10042",
+                  "mode": "list",
+                  "cachedResultName": "[LEX] Belegnr."
+                },
+                "fieldValue": "={{ $('Webhook').item.json.body.neo_document.document_enrichment_data.document_number }}"
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_10041",
+                  "mode": "list",
+                  "cachedResultName": "[LEX] Datum"
+                },
+                "fieldValue": "={{ $('Webhook').item.json.body.neo_document.document_enrichment_data.document_date }}"
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_10039",
+                  "mode": "list",
+                  "cachedResultName": "[LEX] Kundennr."
+                },
+                "fieldValue": "={{ $('Webhook').item.json.body.neo_document.document_enrichment_data.customer_number }}"
+              },
+              {
+                "fieldId": {
+                  "__rl": true,
+                  "value": "customfield_10038",
+                  "mode": "list",
+                  "cachedResultName": "[Lex] Bestellnr."
+                },
+                "fieldValue": "={{ $('If').item.json.body.neo_document.document_enrichment_data.order_number }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        704,
+        96
+      ],
+      "id": "ae218b09-c180-493e-b479-fb4208990f84",
+      "name": "Create an issue",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "lAXNxFHL1VK7auiC",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.docunite.ai/document-management/documents/{{ $('Webhook').item.json.body.neo_document.id }}/blob/original",
+        "authentication": "none",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "neo_ufd0o1PganczESjk0u1ifyQSKccwDtxr"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        -144
+      ],
+      "id": "14924e1a-9dc0-4f20-a11d-386f7218656a",
+      "name": "Get original blob"
+    },
+    {
+      "parameters": {
+        "resource": "issueAttachment",
+        "issueKey": "={{ $json.key }}",
+        "binaryPropertyName": "={{ $('Get original blob').item.binary.data }}"
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -16
+      ],
+      "id": "cc1b2666-083f-41e4-a3e5-3430d46eff87",
+      "name": "Add an attachment to an issue",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "lAXNxFHL1VK7auiC",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get original blob",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an issue": {
+      "main": [
+        [
+          {
+            "node": "Add an attachment to an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get original blob": {
+      "main": [
+        [
+          {
+            "node": "Add an attachment to an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "14a1df9f-1f5e-4a6d-a04d-25633b7f14c7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9d29ed94df00e272a9bfe92ff23cf2ca3c40edc59ae751781865bb0eb017b861"
+  },
+  "id": "DogkwS162NGDfnoB",
+  "tags": []
+}
+
