@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2025-11-11
+
+### Fixed
+- **Document Upload**: Korrekte Implementierung des File-Upload-Endpunkts mit echtem multipart/form-data
+  - Verwendet jetzt natives FormData-Objekt (Node.js 18+) anstelle des vorherigen benutzerdefinierten Formats
+  - Dateien werden als Blob-Objekte mit korrektem MIME-Type und Dateinamen gesendet
+  - Boolean-Werte (classify, split_documents) werden als Strings konvertiert
+  - Behebt das Problem, dass `request.files` und `request.form` auf der Server-Seite leer waren
+  - Korrekte multipart/form-data Struktur mit automatischer boundary-Generierung
+
+### Technical
+- Import von `Blob` aus dem `buffer`-Modul hinzugefügt
+- Keine zusätzlichen externen Dependencies erforderlich
+- Verwendet nur eingebaute Node.js 18+ Features
+
 ## [0.1.3] - 2025-11-11
 
 ### Fixed
@@ -78,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License
 - Node.js 18.17.0+ requirement
 
+[0.1.4]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.4
 [0.1.3]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.3
 [0.1.2]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.2
 [0.1.1]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.1

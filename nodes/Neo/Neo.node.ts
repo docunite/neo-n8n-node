@@ -8,6 +8,7 @@ import {
 	IHttpRequestOptions,
 	NodeOperationError,
 } from 'n8n-workflow';
+import { Blob } from 'buffer';
 
 export class Neo implements INodeType {
 	description: INodeTypeDescription = {
@@ -731,35 +732,29 @@ export class Neo implements INodeType {
 						const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
 						const dataBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 
-						const formDataObject: { [key: string]: any } = {
-							entity_id: entityId,
-							classify: classify,
-							split_documents: splitDocuments,
-							file: {
-								value: dataBuffer,
-								options: {
-									filename: binaryData.fileName,
-									contentType: binaryData.mimeType,
-								},
-							},
-						};
+						// Erstelle echtes FormData-Objekt (verfügbar in Node.js 18+)
+						const formData = new FormData();
+						formData.append('entity_id', entityId);
+						formData.append('classify', String(classify));
+						formData.append('split_documents', String(splitDocuments));
 
 						if (promptId) {
-							formDataObject.prompt_id = promptId;
+							formData.append('prompt_id', promptId);
 						}
 
 						if (originalPath) {
-							formDataObject.original_path = originalPath;
+							formData.append('original_path', originalPath);
 						}
 
+						// Erstelle Blob aus Buffer und füge als Datei hinzu
+						const blob = new Blob([dataBuffer], { type: binaryData.mimeType || 'application/pdf' });
+						formData.append('file', blob, binaryData.fileName || 'file.pdf');
+
+						// Sende Request mit FormData
 						const options: IHttpRequestOptions = {
 							method: 'POST',
-							baseURL: baseUrl,
-							url: '/document-management/documents',
-							headers: {
-								'Content-Type': 'multipart/form-data',
-							},
-							body: formDataObject,
+							url: `${baseUrl}/document-management/documents`,
+							body: formData,
 						};
 
 						responseData = await this.helpers.httpRequestWithAuthentication.call(
