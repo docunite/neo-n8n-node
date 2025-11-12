@@ -260,11 +260,11 @@ export class Neo implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['document'],
-						operation: ['upload', 'classify'],
+						operation: ['upload', 'classify', 'enrichment'],
 					},
 				},
 				default: '',
-				description: 'Prompt ID to use for classification (must be of type "Classification")',
+				description: 'Prompt ID to use for classification or enrichment',
 			},
 			{
 				displayName: 'Original Path',
@@ -884,25 +884,35 @@ export class Neo implements INodeType {
 								body: body,
 							},
 						);
-					} else if (operation === 'getBlob') {
-						const documentId = this.getNodeParameter('documentId', i) as string;
+				} else if (operation === 'getBlob') {
+					const documentId = this.getNodeParameter('documentId', i) as string;
 
-						responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'neoApi',
-							{
-								method: 'GET',
-								baseURL: baseUrl,
-								url: `/document-management/documents/${documentId}/blob`,
-								encoding: 'arraybuffer',
-								returnFullResponse: true,
-							},
-						);
+					responseData = await this.helpers.httpRequestWithAuthentication.call(
+						this,
+						'neoApi',
+						{
+							method: 'GET',
+							baseURL: baseUrl,
+							url: `/document-management/documents/${documentId}/blob`,
+							encoding: 'arraybuffer',
+							returnFullResponse: true,
+						},
+					);
 
-						const binaryData = await this.helpers.prepareBinaryData(
-							Buffer.from(responseData.body as ArrayBuffer),
-							`document_${documentId}`,
-						);
+					// Extrahiere Dateinamen aus Content-Disposition Header
+					let fileName = `document_${documentId}.pdf`;
+					const contentDisposition = responseData.headers['content-disposition'];
+					if (contentDisposition) {
+						const parts = contentDisposition.split('filename=');
+						if (parts.length > 1) {
+							fileName = parts[1].split(';')[0].trim().replace(/['"]/g, '');
+						}
+					}
+
+					const binaryData = await this.helpers.prepareBinaryData(
+						Buffer.from(responseData.body as ArrayBuffer),
+						fileName,
+					);
 
 						return [
 							[
@@ -914,25 +924,35 @@ export class Neo implements INodeType {
 								},
 							],
 						];
-					} else if (operation === 'getBlobOriginal') {
-						const documentId = this.getNodeParameter('documentId', i) as string;
+				} else if (operation === 'getBlobOriginal') {
+					const documentId = this.getNodeParameter('documentId', i) as string;
 
-						responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'neoApi',
-							{
-								method: 'GET',
-								baseURL: baseUrl,
-								url: `/document-management/documents/${documentId}/blob/original`,
-								encoding: 'arraybuffer',
-								returnFullResponse: true,
-							},
-						);
+					responseData = await this.helpers.httpRequestWithAuthentication.call(
+						this,
+						'neoApi',
+						{
+							method: 'GET',
+							baseURL: baseUrl,
+							url: `/document-management/documents/${documentId}/blob/original`,
+							encoding: 'arraybuffer',
+							returnFullResponse: true,
+						},
+					);
 
-						const binaryData = await this.helpers.prepareBinaryData(
-							Buffer.from(responseData.body as ArrayBuffer),
-							`document_${documentId}_original`,
-						);
+					// Extrahiere Dateinamen aus Content-Disposition Header
+					let fileName = `document_${documentId}_original`;
+					const contentDisposition = responseData.headers['content-disposition'];
+					if (contentDisposition) {
+						const parts = contentDisposition.split('filename=');
+						if (parts.length > 1) {
+							fileName = parts[1].split(';')[0].trim().replace(/['"]/g, '');
+						}
+					}
+
+					const binaryData = await this.helpers.prepareBinaryData(
+						Buffer.from(responseData.body as ArrayBuffer),
+						fileName,
+					);
 
 						return [
 							[
