@@ -7,3 +7,9 @@ dist/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+
+# Test and example workflow files
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json

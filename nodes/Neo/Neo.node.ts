@@ -18,7 +18,7 @@ export class Neo implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Interact with docunite® NEO API (docunite.com) for document management and AI processing',
+		description: 'Manage documents and use AI features with the docunite® NEO API. Supports upload, OCR extraction, classification, enrichment, chat and more. Perfect for automated document processing and intelligent data extraction.',
 		defaults: {
 			name: 'docunite® NEO',
 		},
@@ -732,8 +732,8 @@ export class Neo implements INodeType {
 						const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
 						const dataBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 
-						// Erstelle echtes FormData-Objekt (verfügbar in Node.js 18+)
-						const formData = new FormData();
+					// Create real FormData object (available in Node.js 18+)
+					const formData = new FormData();
 						formData.append('entity_id', entityId);
 						formData.append('classify', String(classify));
 						formData.append('split_documents', String(splitDocuments));
@@ -746,12 +746,12 @@ export class Neo implements INodeType {
 							formData.append('original_path', originalPath);
 						}
 
-						// Erstelle Blob aus Buffer und füge als Datei hinzu
-						const blob = new Blob([dataBuffer], { type: binaryData.mimeType || 'application/pdf' });
-						formData.append('file', blob, binaryData.fileName || 'file.pdf');
+					// Create Blob from Buffer and add as file
+					const blob = new Blob([dataBuffer], { type: binaryData.mimeType || 'application/pdf' });
+					formData.append('file', blob, binaryData.fileName || 'file.pdf');
 
-						// Sende Request mit FormData
-						const options: IHttpRequestOptions = {
+					// Send request with FormData
+					const options: IHttpRequestOptions = {
 							method: 'POST',
 							url: `${baseUrl}/document-management/documents`,
 							body: formData,
@@ -899,9 +899,9 @@ export class Neo implements INodeType {
 						},
 					);
 
-					// Extrahiere Dateinamen aus Content-Disposition Header
-					let fileName = `document_${documentId}.pdf`;
-					const contentDisposition = responseData.headers['content-disposition'];
+				// Extract filename from Content-Disposition header
+				let fileName = `document_${documentId}.pdf`;
+				const contentDisposition = responseData.headers['content-disposition'];
 					if (contentDisposition) {
 						const parts = contentDisposition.split('filename=');
 						if (parts.length > 1) {
@@ -939,9 +939,9 @@ export class Neo implements INodeType {
 						},
 					);
 
-					// Extrahiere Dateinamen aus Content-Disposition Header
-					let fileName = `document_${documentId}_original`;
-					const contentDisposition = responseData.headers['content-disposition'];
+				// Extract filename from Content-Disposition header
+				let fileName = `document_${documentId}_original`;
+				const contentDisposition = responseData.headers['content-disposition'];
 					if (contentDisposition) {
 						const parts = contentDisposition.split('filename=');
 						if (parts.length > 1) {

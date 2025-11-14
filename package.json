@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-neo",
-  "version": "0.1.5",
-  "description": "n8n node for docunite® NEO API (docunite.com) integration - Document management, classification, and AI-powered document processing",
+  "version": "0.1.6",
+  "description": "n8n node for docunite® NEO API (docunite.com/neo) integration - The End-to-end AI Document Intelligence Pipeline",
   "keywords": [
     "n8n-community-node-package",
     "n8n",
@@ -9,7 +9,10 @@
     "docunite",
     "document-management",
     "document-classification",
-    "ai-documents"
+    "ai-documents",
+    "webhook",
+    "trigger",
+    "automation"
   ],
   "license": "MIT",
   "homepage": "https://github.com/docunite/neo-n8n-node",
@@ -41,7 +44,8 @@
       "dist/credentials/NeoApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Neo/Neo.node.js"
+      "dist/nodes/Neo/Neo.node.js",
+      "dist/nodes/Neo/NeoTrigger.node.js"
     ]
   },
   "devDependencies": {

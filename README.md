@@ -53,9 +53,19 @@ To use the docunite® NEO node, you need:
 3. Enter your API Key
 4. Save the credentials
 
+## 📚 Nodes
+
+This package provides two nodes:
+
+### 1. **docunite® NEO** (Regular Node)
+The main node for API operations.
+
+### 2. **docunite® NEO Trigger** (Trigger Node)
+Automatically starts workflows when docunite® NEO sends events.
+
 ## 📚 Operations
 
-The docunite® NEO node supports the following resources and operations:
+The **docunite® NEO** node supports the following resources and operations:
 
 ### 📊 Account Management
 
@@ -218,13 +228,35 @@ The docunite® NEO node supports the following resources and operations:
 }
 ```
 
-## 🔗 Webhooks
+## 🔔 docunite® NEO Trigger Node
 
-docunite® NEO supports webhooks for asynchronous notifications about processing status:
+The **docunite® NEO Trigger** node automatically starts your workflow when NEO sends events.
 
-1. Create a webhook using the `Webhook Create` operation
-2. Register your callback URL
-3. Receive notifications when document processing is complete
+### Features
+
+- ✅ Automatic webhook registration when activating workflow
+- ✅ Automatic webhook removal when deactivating workflow
+- ✅ Event type filtering (EXTRACTION, CLASSIFICATION, ENRICHMENT)
+- ✅ Secret validation via x-neo-secret header
+- ✅ Test mode support with "Listen for Test Event"
+- ✅ No generic webhook setup required
+
+### Configuration
+
+1. Add the **docunite® NEO Trigger** node to your workflow
+2. Configure credentials (docunite® NEO API)
+3. Select event types to listen for
+4. Set a webhook name
+5. Choose a secret for authentication
+6. Activate the workflow → Webhook is automatically registered in NEO
+
+### Test Mode
+
+Click "Listen for Test Event" to get a test webhook URL. You must manually register this URL in NEO for testing. Secret validation is automatically disabled in test mode.
+
+### Production Mode
+
+When you activate the workflow, the webhook is automatically registered in NEO with the production URL. The webhook is removed when you deactivate the workflow.
 
 ## 📖 API Documentation
 
@@ -257,6 +289,7 @@ For questions or issues:
 ## 🌟 Features
 
 - ✅ Full docunite® NEO API integration for core resources
+- ✅ **NEO Trigger Node** - Automatic workflow starts on NEO events
 - ✅ Account Management (Balance & Usage tracking)
 - ✅ Document Management (Upload, Processing, Chat, OCR, etc.)
 - ✅ Entity Management (Full CRUD operations)
@@ -266,6 +299,7 @@ For questions or issues:
 - ✅ Binary Data support (Upload/Download)
 - ✅ AI-powered document processing and chat
 - ✅ Batch operations support
+- ✅ Automatic webhook registration and cleanup
 
 ## 📦 Version History
 
