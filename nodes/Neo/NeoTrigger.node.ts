@@ -12,7 +12,7 @@ export class NeoTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'docunite® NEO Trigger',
 		name: 'neoTrigger',
-		icon: 'file:Neo.svg',
+		icon: 'file:neo.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Automatically starts the workflow when docunite® NEO sends events (EXTRACTION, CLASSIFICATION, ENRICHMENT). Registers a webhook when activated and removes it when deactivated. Validates secret from x-neo-secret header for secure authentication.',
@@ -105,7 +105,6 @@ export class NeoTrigger implements INodeType {
 				
 				// Don't register test webhooks automatically - user must do it manually in NEO
 				if (webhookUrl.includes('/webhook-test/')) {
-					console.log('🧪 NEO Trigger: Test mode - webhook registration skipped');
 					return false;
 				}
 				
@@ -147,7 +146,6 @@ export class NeoTrigger implements INodeType {
 			
 			// Don't register test webhooks automatically - user must do it manually in NEO
 			if (webhookUrl.includes('/webhook-test/')) {
-				console.log('🧪 NEO Trigger: Test mode - webhook registration skipped. Please register the webhook manually in NEO.');
 				return true;
 			}
 			
@@ -156,9 +154,6 @@ export class NeoTrigger implements INodeType {
 			const secret = this.getNodeParameter('secret') as string;
 			const credentials = await this.getCredentials('neoApi');
 			const baseUrl = credentials.baseUrl as string;
-
-			// Debug: Log the webhook URL
-			console.log('🔗 NEO Trigger: Registering webhook with URL:', webhookUrl);
 
 			if (eventTypes.length === 0) {
 				throw new NodeOperationError(
@@ -192,8 +187,6 @@ export class NeoTrigger implements INodeType {
 				const workflowStaticData = this.getWorkflowStaticData('node');
 				workflowStaticData.webhookId = webhookData.id;
 
-				console.log('✅ NEO Trigger: Webhook registered successfully with ID:', webhookData.id);
-
 				return true;
 				} catch (error) {
 					throw new NodeOperationError(
@@ -208,7 +201,6 @@ export class NeoTrigger implements INodeType {
 				
 				// Don't try to delete test webhooks - they were never registered automatically
 				if (webhookUrl.includes('/webhook-test/')) {
-					console.log('🧪 NEO Trigger: Test mode - webhook deletion skipped');
 					return true;
 				}
 				
@@ -242,15 +234,11 @@ export class NeoTrigger implements INodeType {
 					// Delete the ID even on error (e.g. webhook no longer exists)
 					delete webhookData.webhookId;
 					
-					// Log the error, but return true to not block n8n
-					console.warn(`Failed to delete webhook ${webhookId} from NEO:`, error.message);
-					
 					// If webhook was not found (404), that's ok
 					if (error.statusCode === 404 || error.response?.statusCode === 404) {
 						return true;
 					}
 					
-					// For other errors: warning but still successful
 					return true;
 				}
 			},
@@ -260,23 +248,12 @@ export class NeoTrigger implements INodeType {
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
 		const bodyData = this.getBodyData();
 		const headerData = this.getHeaderData();
-		const eventTypes = this.getNodeParameter('eventTypes') as string[];
 		const secret = this.getNodeParameter('secret') as string;
 		const validateSecret = this.getNodeParameter('validateSecret', true) as boolean;
 
 		// Check if we are in test/development mode
 		const mode = this.getMode();
 		const isTestExecution = mode === 'manual';
-
-		console.log('📨 NEO Trigger: Webhook received', { 
-			mode, 
-			isTestExecution, 
-			eventType: bodyData.event_type,
-			hasSecret: !!headerData['x-neo-secret'],
-			headers: Object.keys(headerData),
-			bodyKeys: Object.keys(bodyData),
-			bodyData: bodyData
-		});
 
 		// Validate the secret only when:
 		// - Not in test mode
@@ -285,7 +262,6 @@ export class NeoTrigger implements INodeType {
 			const receivedSecret = headerData['x-neo-secret'] as string;
 			
 			if (!receivedSecret) {
-				console.warn('⚠️ NEO Trigger: No secret received in x-neo-secret header');
 				throw new NodeOperationError(
 					this.getNode(),
 					'Webhook secret missing in x-neo-secret header',
@@ -293,29 +269,16 @@ export class NeoTrigger implements INodeType {
 			}
 
 			if (receivedSecret !== secret) {
-				console.error('❌ NEO Trigger: Secret validation failed', {
-					received: receivedSecret?.substring(0, 5) + '...',
-					expected: secret?.substring(0, 5) + '...',
-				});
 				throw new NodeOperationError(
 					this.getNode(),
 					'Webhook secret validation failed - unauthorized request',
 				);
 			}
-			
-			console.log('✅ NEO Trigger: Secret validated successfully');
 		}
 
 		// Extract event type from the body
 		// NEO might send event_type directly or we need to infer it from the registered event types
 		const eventType = bodyData.event_type as string;
-
-		// Note: Event type filtering is already done by NEO when sending webhooks
-		// NEO only sends events that match the registered event_types
-		// So we don't need to filter here - just log if event_type is missing
-		if (!eventType) {
-			console.log('ℹ️ NEO Trigger: No event_type in body. NEO filters events server-side based on webhook registration.');
-		}
 
 		// Prepare the output data
 		const returnData: IDataObject = {

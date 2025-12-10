@@ -7,14 +7,15 @@ import {
 	IHttpRequestMethods,
 	IHttpRequestOptions,
 	NodeOperationError,
+	NodeConnectionTypes,
+	Icon,
 } from 'n8n-workflow';
-import { Blob } from 'buffer';
 
 export class Neo implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'docunite® NEO',
 		name: 'neo',
-		icon: 'file:Neo.svg',
+		icon: 'https://docufilesbackupstgdeprd.blob.core.windows.net/wordpress/2025/02/Neo.svg' as Icon,
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
@@ -22,21 +23,14 @@ export class Neo implements INodeType {
 		defaults: {
 			name: 'docunite® NEO',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'neoApi',
 				required: true,
 			},
 		],
-		requestDefaults: {
-			baseURL: '={{$credentials.baseUrl}}',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		},
 		properties: [
 			// Resource Selection
 			{
@@ -742,15 +736,13 @@ export class Neo implements INodeType {
 							formData.append('prompt_id', promptId);
 						}
 
-						if (originalPath) {
-							formData.append('original_path', originalPath);
-						}
+					if (originalPath) {
+						formData.append('original_path', originalPath);
+					}
 
-					// Create Blob from Buffer and add as file
-					const blob = new Blob([dataBuffer], { type: binaryData.mimeType || 'application/pdf' });
-					formData.append('file', blob, binaryData.fileName || 'file.pdf');
+				formData.append('file', dataBuffer, binaryData.fileName || 'file.pdf');
 
-					// Send request with FormData
+				// Send request with FormData
 					const options: IHttpRequestOptions = {
 							method: 'POST',
 							url: `${baseUrl}/document-management/documents`,

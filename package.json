@@ -27,7 +27,6 @@
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
-    "format": "prettier nodes credentials --write",
     "lint": "eslint \"nodes/**/*.ts\" \"credentials/**/*.ts\" package.json",
     "lintfix": "eslint \"nodes/**/*.ts\" \"credentials/**/*.ts\" package.json --fix",
     "prepublishOnly": "npm run build && npm run lint"
@@ -55,8 +54,6 @@
     "eslint": "^8.56.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.1",
     "gulp": "^5.0.1",
-    "n8n-workflow": "^1.0.0",
-    "prettier": "^3.1.0",
     "typescript": "^5.3.0"
   },
   "peerDependencies": {

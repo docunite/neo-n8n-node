@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - 2025-12-10
+
+### Fixed
+- **n8n Cloud Compatibility**: Removed Blob dependency to comply with n8n Cloud requirements
+  - File uploads now use Buffer directly with FormData (Node.js 18+)
+  - Removed `import { Blob } from 'buffer'` statement
+  - No external dependencies required - uses only native Node.js features
+- **Icon File Naming**: Fixed icon filename for Linux compatibility
+  - Renamed SVG file from `Neo.svg` to `neo.svg` for case-sensitive filesystems
+  - Updated icon references in both Neo.node.ts and NeoTrigger.node.ts to use lowercase filename
+- **Package Dependencies**: Removed unnecessary prettier dependency
+  - Removed prettier from devDependencies
+  - Removed format script that depended on prettier
+
+### Technical
+- Improved n8n Cloud compatibility by removing Blob usage
+- All code now uses only native Node.js 18+ features
+- No additional external packages required
+
 ## [0.1.6] - 2025-11-14
 
 ### Added
@@ -33,13 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **Document Upload**: Correct implementation of file upload endpoint with proper multipart/form-data
   - Now uses native FormData object (Node.js 18+) instead of previous custom format
-  - Files are sent as Blob objects with correct MIME type and filename
+  - Files are sent using Buffer directly with FormData (Blob removed in v0.1.7 for n8n Cloud compatibility)
   - Boolean values (classify, split_documents) are converted to strings
   - Fixes issue where `request.files` and `request.form` were empty on server side
   - Correct multipart/form-data structure with automatic boundary generation
 
 ### Technical
-- Added import of `Blob` from `buffer` module
+- Uses native FormData with Buffer (Blob removed in v0.1.7)
 - No additional external dependencies required
 - Uses only built-in Node.js 18+ features
 
@@ -116,6 +135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License
 - Node.js 18.17.0+ requirement
 
+[0.1.7]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.7
 [0.1.6]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.6
 [0.1.5]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.5
 [0.1.4]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.4
