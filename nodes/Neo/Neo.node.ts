@@ -15,7 +15,7 @@ export class Neo implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'docunite® NEO',
 		name: 'neo',
-		icon: 'https://docufilesbackupstgdeprd.blob.core.windows.net/wordpress/2025/02/Neo.svg' as Icon,
+		icon: 'file:neo.svg',
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',

@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	IWebhookResponseData,
 	NodeOperationError,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 
 export class NeoTrigger implements INodeType {
@@ -19,8 +20,8 @@ export class NeoTrigger implements INodeType {
 		defaults: {
 			name: 'docunite® NEO Trigger',
 		},
-		inputs: [],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'neoApi',
