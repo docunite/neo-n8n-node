@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9] - 2025-12-11
+
+### Fixed
+- **Icon Configuration**: Changed icon from URL to bundled file reference
+  - Changed icon from external URL to `file:neo.svg` for better compatibility across environments
+  - Icon now uses local bundled file instead of external URL
+  - Fixes issues in environments where external URLs are blocked or unavailable
+
 ## [0.1.7] - 2025-12-10
 
 ### Fixed
@@ -135,6 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License
 - Node.js 18.17.0+ requirement
 
+[0.1.9]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.9
 [0.1.7]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.7
 [0.1.6]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.6
 [0.1.5]: https://github.com/docunite/neo-n8n-node/releases/tag/v0.1.5
